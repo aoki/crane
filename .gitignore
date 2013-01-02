@@ -1,0 +1,15 @@
+/*
+!/CraneTweet
+!/*.sln
+!/.gitignore
+
+/CraneTweet/*
+#!/CraneTweet/conf
+!/CraneTweet/css
+!/CraneTweet/images
+!/CraneTweet/js
+!/CraneTweet/*.html
+!/CraneTweet/*.jsproj
+!/CraneTweet/*.appxmanifest
+
+Thumbs.db
