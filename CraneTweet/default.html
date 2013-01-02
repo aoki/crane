@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <title>CraneTweet</title>
+
+    <!-- WinJS 参照 -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+    <script src="js/metroauth/lib/oauth.js"></script>
+    <script src="js/metroauth/lib/twitter.js"></script>
+
+    <!-- CraneTweet 参照 -->
+    <link href="/css/default.css" rel="stylesheet" />
+    <script src="/js/default.js"></script>
+</head>
+<body>
+
+    <h1 class="headerClass">Crane Tweet</h1>
+
+    <div class="mainContent">
+        <p>Hello world!</p>
+        <button id="refleshButton">Get!</button>
+        <button id="connectButton">Connect</button>
+        <button id="disconnectButton">Disconnect</button>
+        <label for="ratingControlDiv">
+            Rate this greeting: 
+        </label>
+        <div id="ratingControlDiv" data-win-control="WinJS.UI.Rating">
+
+        </div>
+        <div id="ratingOutput"></div>
+        <div id="view">
+        </div>
+    </div>
+</body>
+</html>
