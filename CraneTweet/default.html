@@ -6,34 +6,36 @@
     <title>CraneTweet</title>
 
     <!-- WinJS 参照 -->
-    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <link id="metroStyle" href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+    <script src="js/craneThemes.js"></script>
     <script src="js/metroauth/lib/oauth.js"></script>
     <script src="js/metroauth/lib/twitter.js"></script>
 
     <!-- CraneTweet 参照 -->
     <link href="/css/default.css" rel="stylesheet" />
     <script src="/js/default.js"></script>
+    <script src="/js/navigator.js"></script>
 </head>
 <body>
-
-    <h1 class="headerClass">Crane Tweet</h1>
-
-    <div class="mainContent">
-        <p>Hello world!</p>
-        <button id="refleshButton">Get!</button>
-        <button id="connectButton">Connect</button>
-        <button id="disconnectButton">Disconnect</button>
-        <label for="ratingControlDiv">
-            Rate this greeting: 
-        </label>
-        <div id="ratingControlDiv" data-win-control="WinJS.UI.Rating">
-
-        </div>
-        <div id="ratingOutput"></div>
-        <div id="view">
-        </div>
+    <div id="contenthost" data-win-control="Application.PageControlNavigator"
+        data-win-options="{home: '/pages/home/home.html'}">
     </div>
+    <div id="appbar" data-win-control="WinJS.UI.AppBar"
+        data-win-options="{placement:'top'}">
+        <hr data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{type:'separator', section:'grobal'}" />
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'homeButton', label:'Home', icon:'home', section:'global',
+            tooltip:'Go to home', type:'button'}" ></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'page2Button', label:'Page 2', icon:'page', section:'global',
+            tooltip:'Go to page 2', type:'button'}" ></button>
+        <button data-win-control="WinJS.UI.AppBarCommand"
+            data-win-options="{id:'setLightColorButton', label:'Light', icon:'page', section:'global',
+            tooltip:'Change to Light themw', type:'button'}" ></button>
+    </div>
+
 </body>
 </html>

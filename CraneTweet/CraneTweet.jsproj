@@ -58,10 +58,21 @@
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
+    <Content Include="js\craneThemes.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\metroauth\lib\oauth.js" />
     <Content Include="js\metroauth\lib\twitter.js" />
+    <Content Include="js\navigator.js" />
+    <Content Include="pages\follow\follow.css" />
+    <Content Include="pages\follow\follow.html" />
+    <Content Include="pages\follow\follow.js" />
+    <Content Include="pages\home\home.css" />
+    <Content Include="pages\home\home.html" />
+    <Content Include="pages\home\home.js" />
+    <Content Include="pages\photoPick\photoPick.css" />
+    <Content Include="pages\photoPick\photoPick.html" />
+    <Content Include="pages\photoPick\photoPick.js" />
     <None Include="CraneTweet_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

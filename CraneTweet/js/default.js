@@ -1,20 +1,21 @@
-﻿// 空白のテンプレートの概要については、次のドキュメントを参照してください:
-// http://go.microsoft.com/fwlink/?LinkId=232509
+﻿// ナビゲーション テンプレートの概要については、次のドキュメントを参照してください:
+// http://go.microsoft.com/fwlink/?LinkId=232506
+
+// TODO: don't use global variable. how to give the object to other page ...
+//var twitter
+
 ( function () {
   "use strict";
-
-  var DEBUG = true;
 
   WinJS.Binding.optimizeBindingReferences = true;
 
   var app = WinJS.Application;
   var activation = Windows.ApplicationModel.Activation;
+  var nav = WinJS.Navigation;
+  WinJS.Application.sessionState.defaultColor = Themes.DefaultLight;
+  document.getElementById( "metroStyle" ).href = WinJS.Application.sessionState.defaultColor;
 
-  WinJS.Application.onloaded = function () {
-    WinJS.Resources.processAll();
-  }
-
-  app.onactivated = function ( args ) {
+  app.addEventListener( "activated", function ( args ) {
     if ( args.detail.kind === activation.ActivationKind.launch ) {
       if ( args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated ) {
         // TODO: このアプリケーションは新しく起動しました。ここでアプリケーションを
@@ -24,142 +25,103 @@
         // ここでアプリケーションの状態を復元します。
       }
 
-      args.setPromise( WinJS.UI.processAll().then( function completed() {
+      if ( app.sessionState.history ) {
+        nav.history = app.sessionState.history;
+      }
+      args.setPromise( WinJS.UI.processAll().then( function () {
+        var appbar = document.getElementById( 'appbar' ).winControl;
 
-        // Retrieve the div that hosts the Rating control.
-        var ratingControlDiv = document.getElementById( "ratingControlDiv" );
+        var homeButton = appbar.getCommandById( 'homeButton' );
+        homeButton.addEventListener( 'click', goToHomePage, false );
+        var page2Button = appbar.getCommandById( 'page2Button' );
+        page2Button.addEventListener( 'click', goToPage2, false );
+        var setColorButton = appbar.getCommandById( 'setLightColorButton' );
+        setColorButton.addEventListener('click', setTheme, false);
 
-        // Retrieve the actual Rating control.
-        var ratingControl = ratingControlDiv.winControl;
-
-        // Register the event handler. 
-        ratingControl.addEventListener( "change", ratingChanged, false );
-
-
-        var refleshButton = document.getElementById( 'refleshButton' );
-        refleshButton.addEventListener( 'click', refleshButtonClickHandler, false );
-        var connectButton = document.getElementById( 'connectButton' );
-        connectButton.addEventListener( 'click', connectButtonClickHandler, false );
-        var disconnectButton = document.getElementById( 'disconnectButton' );
-        disconnectButton.addEventListener( 'click', disconnectButtonClickHandler, false );
-
+        if ( nav.location ) {
+          nav.history.current.initialPlaceholder = true;
+          return nav.navigate( nav.location, nav.state );
+        } else {
+          return nav.navigate( Application.navigator.home );
+        }
       } ) );
 
+      // Consumer key is loaded from resource file when initialize.
+      var res = WinJS.Resources;
+      var consumer_key = res.getString( 'consumer_key' ).value;
+      var consumer_secret = res.getString( 'consumer_secret' ).value;
+      var callback_url = res.getString( 'callback_url' ).value;
+
+      // TODO: remove these output messages.
+      console.log( 'Consumer Key: ' + consumer_key );
+      console.log( 'Consumer Secret: ' + consumer_secret );
+      console.log( 'Callback URL: ' + callback_url );
+
+      // Access token is loaded from user local settings.
+      var appData = Windows.Storage.ApplicationData.current;
+      var localSettings = appData.localSettings;
+      var value = localSettings.values['TwitterAccessTokenData'];
+
+      // Check to have the access token already.
+      // TODO: don't use global variable. how to give the object to other page ...
+      //var twitter = new Twitter.Client( consumer_key, consumer_secret, callback_url );
+      var twitter = new Twitter.Client( consumer_key, consumer_secret, callback_url );
+      WinJS.Application.sessionState.twitter = twitter;
+      if ( !value ) {
+        // If not have the access token yet, then authenticate using OAuth.
+        // After that save the access token into the user local settings.
+        twitter.authenticate().then(
+          function complete( info ) {
+            // TODO: remove these output messages.
+            console.log(
+              "AccessToken=" + info.accessToken +
+              " AccessTokenSecret=" + info.accessTokenSecret +
+              " UserID=" + info.userId +
+              " ScreenName=" + info.screenName );
+
+            // Save the access token into the user local settings.
+            var twitterAccessTokenData = new Windows.Storage.ApplicationDataCompositeValue();
+            twitterAccessTokenData['AccessToken'] = info.accessToken;
+            twitterAccessTokenData['AccessTokenSecret'] = info.accessTokenSecret;
+            twitterAccessTokenData['UserID'] = info.userId;
+            twitterAccessTokenData['ScreenName'] = info.screenName;
+            localSettings.values['TwitterAccessTokenData'] = twitterAccessTokenData;
+
+            twitter.setAuthInfo( info );
+          }
+        );
+      } else {
+        twitter.accessToken_ = value['AccessToken'];
+        twitter.accessTokenSecret_ = value['AccessTokenSecret'];
+        twitter.userId_ = value['UserID'];
+        twitter.screenName_ = value['ScreenName'];
+      }
     }
-  };
+  } );
 
-  // TODO Confファイルに移そう
-  var res = WinJS.Resources;
-  var consumer_key = res.getString( 'consumer_key' ).value;
-  var consumer_secret = res.getString( 'consumer_secret' ).value;
-  var callback_url = res.getString( 'callback_url' ).value;
-
-  if ( DEBUG ) {
-    console.log( 'Consumer Key: ' + consumer_key );
-    console.log( 'Consumer Secret: ' + consumer_secret );
-    console.log( 'Callback URL: ' + callback_url );
+  function goToHomePage( eventInfo ) {
+    WinJS.Navigation.navigate('/pages/home/home.html');
   }
 
-  var appData = Windows.Storage.ApplicationData.current;
+  function goToPage2( eventInfo ) {
+    WinJS.Navigation.navigate( '/pages/photoPick/photoPick.html' );
+  }
 
-  var twitter = new Twitter.Client( consumer_key, consumer_secret, callback_url );
-  
-  var localSettings = appData.localSettings;
-  var value = localSettings.values['TwitterAccessTokenData'];
-
-  if ( !value ) {
-    twitter.authenticate().then(
-      function complete( info ) {
-        console.log(
-          "AccessToken=" + info.accessToken +
-          " AccessTokenSecret=" + info.accessTokenSecret +
-          " UserID=" + info.userId +
-          " ScreenName=" + info.screenName );
-
-        var twitterAccessTokenData = new Windows.Storage.ApplicationDataCompositeValue();
-        twitterAccessTokenData['AccessToken'] = info.accessToken;
-        twitterAccessTokenData['AccessTokenSecret'] = info.accessTokenSecret;
-        twitterAccessTokenData['UserID'] = info.userId;
-        twitterAccessTokenData['ScreenName'] = info.screenName;
-
-        localSettings.values['TwitterAccessTokenData'] = twitterAccessTokenData;
-
-        twitter.setAuthInfo( info );
-      }
-    );
-  } else {
-
-    twitter.accessToken_ = value['AccessToken'];
-    twitter.accessTokenSecret_ = value['AccessTokenSecret'];
-    twitter.userId_ = value['UserID'];
-    twitter.screenName_ = value['ScreenName'];
-
+  function setTheme(eventInfo){
+    document.getElementById('metroStyle').href = Themes.DefaultLight;
   }
 
   app.oncheckpoint = function ( args ) {
     // TODO: このアプリケーションは中断しようとしています。ここで中断中に
-    // 維持する必要のある状態を保存します。中断中に自動的に保存され、
-    // 復元される WinJS.Application.sessionState オブジェクトを使用
-    // できます。アプリケーションを中断する前に非同期操作を完了する
-    // 必要がある場合は、args.setPromise() を呼び出して
-    // ください。
+    // 維持する必要のある状態を保存します。アプリケーションが中断される前に 
+    // 非同期操作を終了する必要がある場合は 
+    // args.setPromise() を呼び出してください。
+    app.sessionState.history = nav.history;
   };
 
-  function connectButtonClickHandler( eventInfo ) {
-    twitter.authenticate().then(
-      function complete( info ) {
-        console.log(
-          "AccessToken=" + info.accessToken +
-          " AccessTokenSecret=" + info.accessTokenSecret +
-          " UserID=" + info.userId +
-          " ScreenName=" + info.screenName );
-
-        var twitterAccessTokenData = new Windows.Storage.ApplicationDataCompositeValue();
-        twitterAccessTokenData['AccessToken'] = info.accessToken;
-        twitterAccessTokenData['AccessTokenSecret'] = info.accessTokenSecret;
-        twitterAccessTokenData['UserID'] = info.userId;
-        twitterAccessTokenData['ScreenName'] = info.screenName;
-
-        localSettings.values['TwitterAccessTokenData'] = twitterAccessTokenData;
-
-        twitter.setAuthInfo( info );
-      }
-  );
-  }
-  function disconnectButtonClickHandler( eventInfo ) {
-    localSettings.values['TwitterAccessTokenData'] = null;
-    document.getElementById( 'view' ).removeChild( document.getElementById( 'tl' ) );
-  }
-
-  function refleshButtonClickHandler( eventInfo ) {
-    twitter.getTimelines( "home_timeline", { count: 100 } ).then(
-            function complete( tweets ) {
-
-              var ul1 = document.createElement( 'ul' );
-              ul1.setAttribute( 'id', 'tl' );
-              tweets.reverse().forEach( function ( tweet, index, array ) {
-                console.log( "[" + tweet.created_at + "] @" + tweet.user.screen_name + " | " + tweet.text );
-                var li1 = document.createElement( 'li' );
-                ul1.appendChild( li1 );
-                var txt2 = document.createTextNode( "[" + tweet.created_at + "] @" + tweet.user.screen_name + " | " + tweet.text );
-                li1.appendChild( txt2 );
-                document.getElementById( "view" ).appendChild( ul1 );
-              } );
-            },
-            function error( err ) {
-              console.log( err.message );
-              if ( err.message === "Unauthorized" || err.message === "Bad Request" ) {
-
-              }
-            }
-          );
-  }
-
-  function ratingChanged( eventInfo ) {
-    var ratingOutput = document.getElementById( "ratingOutput" );
-    ratingOutput.innerText = eventInfo.detail.tentativeRating;
-  }
-
   app.start();
-
 } )();
+
+
+
+
