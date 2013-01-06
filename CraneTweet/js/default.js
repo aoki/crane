@@ -1,9 +1,6 @@
 ﻿// ナビゲーション テンプレートの概要については、次のドキュメントを参照してください:
 // http://go.microsoft.com/fwlink/?LinkId=232506
 
-// TODO: don't use global variable. how to give the object to other page ...
-//var twitter
-
 ( function () {
   "use strict";
 
@@ -12,7 +9,7 @@
   var app = WinJS.Application;
   var activation = Windows.ApplicationModel.Activation;
   var nav = WinJS.Navigation;
-  WinJS.Application.sessionState.defaultColor = Themes.DefaultLight;
+  WinJS.Application.sessionState.defaultColor = Themes.DefaultDark;
   document.getElementById( "metroStyle" ).href = WinJS.Application.sessionState.defaultColor;
 
   app.addEventListener( "activated", function ( args ) {
@@ -63,8 +60,6 @@
       var value = localSettings.values['TwitterAccessTokenData'];
 
       // Check to have the access token already.
-      // TODO: don't use global variable. how to give the object to other page ...
-      //var twitter = new Twitter.Client( consumer_key, consumer_secret, callback_url );
       var twitter = new Twitter.Client( consumer_key, consumer_secret, callback_url );
       WinJS.Application.sessionState.twitter = twitter;
       if ( !value ) {
