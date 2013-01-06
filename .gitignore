@@ -4,7 +4,7 @@
 !/.gitignore
 
 /CraneTweet/*
-#!/CraneTweet/conf
+!/CraneTweet/conf
 !/CraneTweet/css
 !/CraneTweet/images
 !/CraneTweet/js
