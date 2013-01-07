@@ -70,6 +70,9 @@
     <Content Include="pages\photoPick\photoPick.css" />
     <Content Include="pages\photoPick\photoPick.html" />
     <Content Include="pages\photoPick\photoPick.js" />
+    <Content Include="pages\searchResults\searchResults.css" />
+    <Content Include="pages\searchResults\searchResults.html" />
+    <Content Include="pages\searchResults\searchResults.js" />
     <None Include="CraneTweet_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
