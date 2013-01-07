@@ -1,7 +1,0 @@
-﻿// Windows アプリケーションのローカライズの詳細については、次を参照してください: http://go.microsoft.com/fwlink/?LinkId=212836
-// Consumer Key などの定数を定義しておく
-{
-  "consumer_key": "your consumer key",
-  "consumer_secret": "your consumer secret key",
-  "callback_url": "your callback URL"
-}
