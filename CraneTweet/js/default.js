@@ -33,7 +33,7 @@
         var page2Button = appbar.getCommandById( 'page2Button' );
         page2Button.addEventListener( 'click', goToPage2, false );
         var setColorButton = appbar.getCommandById( 'setLightColorButton' );
-        setColorButton.addEventListener('click', setTheme, false);
+        setColorButton.addEventListener( 'click', setTheme, false );
 
         if ( nav.location ) {
           nav.history.current.initialPlaceholder = true;
@@ -95,15 +95,15 @@
   } );
 
   function goToHomePage( eventInfo ) {
-    WinJS.Navigation.navigate('/pages/home/home.html');
+    WinJS.Navigation.navigate( '/pages/home/home.html' );
   }
 
   function goToPage2( eventInfo ) {
     WinJS.Navigation.navigate( '/pages/photoPick/photoPick.html' );
   }
 
-  function setTheme(eventInfo){
-    document.getElementById('metroStyle').href = Themes.DefaultLight;
+  function setTheme( eventInfo ) {
+    document.getElementById( 'metroStyle' ).href = Themes.DefaultLight;
   }
 
   app.oncheckpoint = function ( args ) {

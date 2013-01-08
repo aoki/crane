@@ -36,12 +36,12 @@
   margin-left: 20px;
 }
 
-#imageInfoContainer > div {
-  margin-left: 20px;
-  margin-bottom: 40px;
-  width: 4000px;
-  word-wrap: break-word;
-}
+  #imageInfoContainer > div {
+    margin-left: 20px;
+    margin-bottom: 40px;
+    width: 4000px;
+    word-wrap: break-word;
+  }
 
 .pageSubheader {
   font-family: 'Segoe UI Light';

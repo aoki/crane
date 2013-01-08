@@ -108,8 +108,8 @@
       var tweet = document.getElementById( 'tweetBox' ).value;
       twitter.postTweet( "POST", tweet );
     },
-    
-    searchButtonClickHandler: function(eventInfo){
+
+    searchButtonClickHandler: function ( eventInfo ) {
       var twitter = WinJS.Application.sessionState.twitter;
       var query = document.getElementById( 'tweetBox' ).value;
       document.getElementById( "view" ).removeChild( document.getElementById( 'view' ).childNodes.item( 0 ) );

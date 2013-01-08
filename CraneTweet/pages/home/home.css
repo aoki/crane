@@ -2,24 +2,24 @@
 }
 
 .headerClass {
-    margin-top: 45px;
-    margin-left: 120px;
+  margin-top: 45px;
+  margin-left: 120px;
 }
 
 .mainContent {
-    margin-top: 31px;
-    margin-left: 120px;
-    margin-bottom: 50px;
+  margin-top: 31px;
+  margin-left: 120px;
+  margin-bottom: 50px;
 }
 
 #view {
-    height: 90%;
-    margin-bottom: 40px;
+  height: 90%;
+  margin-bottom: 40px;
 }
 
 .home section[role=main] {
-    margin-left: 120px;
-    margin-right: 120px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 
 
@@ -30,15 +30,15 @@
 }
 
 @media screen and (-ms-view-state: snapped) {
-    .home section[role=main] {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
+  .home section[role=main] {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 @media screen and (-ms-view-state: fullscreen-portrait) {
-    .home section[role=main] {
-        margin-left: 100px;
-        margin-right: 100px;
-    }
+  .home section[role=main] {
+    margin-left: 100px;
+    margin-right: 100px;
+  }
 }
