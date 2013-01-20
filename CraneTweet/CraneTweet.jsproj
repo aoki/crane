@@ -59,6 +59,8 @@
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
     <Content Include="js\craneThemes.js" />
+    <Content Include="js\DesginData.js" />
+    <Content Include="js\tweetDataSource.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\metroauth\lib\oauth.js" />
