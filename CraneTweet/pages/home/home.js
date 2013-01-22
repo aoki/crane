@@ -76,23 +76,20 @@
 
     refleshButtonClickHandler: function ( eventInfo ) {
       var twitter = WinJS.Application.sessionState.twitter;
-      document.getElementById( "view" ).removeChild( document.getElementById( 'view' ).childNodes.item( 0 ) );
 
       twitter.getTimelines( "home_timeline", { "count": "100" } ).then(
         function complete( tweets ) {
-          var ul1 = document.createElement( 'ul' );
-          ul1.setAttribute( 'id', 'tl' );
-          tweets.reverse().forEach( function ( tweet, index, array ) {
-            console.log( "[" + tweet.created_at + "] @" + tweet.user.screen_name + " | " + tweet.text );
-            var li1 = document.createElement( 'li' );
-            var img = document.createElement( 'img' );
-            img.setAttribute( 'src', tweet.user.profile_image_url_https );
-            li1.appendChild( img );
-            var txt2 = document.createTextNode( "[" + tweet.created_at + "] @" + tweet.user.name + tweet.user.screen_name + " | " + tweet.text );
-            ul1.insertBefore( li1, ul1.firstChild );
-            li1.appendChild( txt2 );
+
+          var listview = document.getElementById( "view" ).winControl;
+          var templateElem = document.querySelector( ".tweet-template" );
+          listview.itemTemplate = templateElem;
+          var list = new WinJS.Binding.List();
+          listview.itemDataSource = list.dataSource;
+
+          tweets.forEach( function ( tweet, index, array ) {
+            //console.log( "[" + tweet.created_at + "] @" + tweet.user.screen_name + " | " + tweet.text );
+            list.push(tweet);
           } );
-          document.getElementById( "view" ).appendChild( ul1 );
         },
         function error( err ) {
           console.log( err.message );
@@ -148,6 +145,18 @@
       var link = eventInfo.target;
       WinJS.Navigation.navigate( link.href );
     }
+  } );
 
+  WinJS.Namespace.define( "Conv", {
+    change_to_localtime: WinJS.Binding.converter( function ( date ) {
+      var sd = date.split( " " );
+      return new Date( [sd[0], ",", sd[2], sd[1], sd[5], sd[3], sd[4]].join( " " ) );
+    } ),
+    decode_html_spetial_char: WinJS.Binding.converter( function ( text ) {
+      return text.replace( /&amp;/g, "&" ).
+              replace( /&quot;/g, '"' ).
+              replace( /&lt;/g, "<" ).
+              replace( /&gt;/g, ">" );
+    } )
   } );
 } )();

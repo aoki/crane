@@ -4,14 +4,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
   <title>home</title>
-
   <!-- WinJS 参照 -->
-  <!--link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" /-->
+  <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
   <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
   <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
+  <script src="../../js/tweetDataSource.js"></script>
+  <script src="../../js/DesginData.js"></script>
+
   <link href="home.css" rel="stylesheet" />
   <script src="home.js"></script>
+
+
 </head>
 <body>
   <div class="home fragment">
@@ -29,13 +33,49 @@
       <button id="connectButton">Connect</button>
       <button id="disconnectButton">Disconnect</button>
       <label for="ratingControlDiv">
-        Rate this greeting:
+        Rate this greeting: 
+           
       </label>
       <div id="ratingControlDiv" data-win-control="WinJS.UI.Rating">
       </div>
       <div id="ratingOutput"></div>
-      <div id="view">
+      <div id="view" data-win-control="WinJS.UI.ListView" style="width: 410px; height: auto;">
       </div>
+
+      <div id="smallListIconTextTemplate" data-win-control="WinJS.Binding.Template">
+        <img src="#" data-win-bind="src: user.profile_image_url_https; alt: user.name" />
+        <div class="smallListIconTextItem">
+          <h4 data-win-bind="innerText: user.name"></h4>
+          <h4 data-win-bind="innerText: user.screen_name"></h4>
+        </div>
+      </div>
+
+      <div id="listView"
+        class="win-selectionstylefilled"
+        data-win-control="WinJS.UI.ListView"
+        data-win-options="{ 
+                itemDataSource: twt.dataSource, 
+                itemTemplate: smallListIconTextTemplate, 
+                selectionMode: 'none', 
+                tapBehavior: 'none', 
+                swipeBehavior: 'none', 
+                layout: { type: WinJS.UI.GridLayout } 
+            }">
+      </div>
+
+      <div class="tweet-template"
+        data-win-control="WinJS.Binding.Template">
+        <div class="name" style="height: auto; width: 400px">
+          <img src="#" class="user-icon" data-win-bind="src: user.profile_image_url_https; alt: user.name" style="height: 30px; width: 30px;" />
+          <div>
+            <span data-win-bind="textContent: user.name"></span>
+            @<span data-win-bind="textContent: user.screen_name"></span>
+            <span data-win-bind="textContent: created_at Conv.change_to_localtime"></span>
+            <span data-win-bind="textContent: text Conv.decode_html_spetial_char"></span>
+          </div>
+        </div>
+      </div>
+
     </section>
   </div>
 </body>
